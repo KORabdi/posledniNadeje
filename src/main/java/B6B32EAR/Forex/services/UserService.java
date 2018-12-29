@@ -36,6 +36,9 @@ public class UserService {
     @Autowired 
     @Qualifier("sha512")
     MessageDigest md;
+
+    @Autowired
+    BrokerPool bp;
     
     public Status login(User u) throws Status{
         try{
@@ -52,7 +55,7 @@ public class UserService {
                 Timestamp timestamp = new Timestamp(System.currentTimeMillis());
                 byte[] idsession = md.digest((user.getMail() + timestamp.toString()).getBytes());
                 user.setIdsession(idsession.toString());
-                timestamp.setTime(timestamp.getTime()+EXPIRE);
+                timestamp.setTime(timestamp.getTime()+EXPIRE+10000);
                 user.setSessionexpire(timestamp);
                 ujc.update(user);
                 Status s = new Status(0);
@@ -60,6 +63,8 @@ public class UserService {
                 s.put("idsession", user.getIdsession());
                 if(user.getXtbpassword() != null && user.getXtbpassword().equals("")){
                     s.setStatus(1);
+                } else {
+                    bp.addBroker(user);
                 }
                 return s;
             }
@@ -83,8 +88,14 @@ public class UserService {
         } else {
             throw new Status(300);
         }
+
         return u;
         
+    }
+
+    public void xtbSession(Map<String, String> body) throws Status{
+        User u = validateSession(body);
+        bp.addBroker(u, body.get("xtbsession"));
     }
     
     public User registerUser(Map<String, String> user) throws Status{

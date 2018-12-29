@@ -48,14 +48,14 @@ public class LoginController {
             this.status = users.login(u);
         } catch (Status ex) {
             this.status = ex;
-            HashMap temp = new HashMap<String, String>();
+            /*HashMap temp = new HashMap<String, String>();
             temp.put("mail", body.get("mail"));
             temp.put("systempassword", body.get("systempassword"));
             try {
                 users.registerUser(temp);
             } catch (Status status1) {
                 status1.printStackTrace();
-            }
+            }*/
         }
         return this.status.toJSON();
     }
@@ -63,12 +63,12 @@ public class LoginController {
     @RequestMapping("/xtbsession")
     @ResponseBody
     public JSONObject xtbSession(@RequestParam Map<String, String> body) {
-        
         try {
-            this.status = ms.sendForexSessionId(body);
+            users.xtbSession(body);
         } catch (Status ex) {
-            this.status = ex;
+            return ex.toJSON();
         }
+
         return this.status.toJSON();
         
     }
