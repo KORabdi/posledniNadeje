@@ -1,0 +1,19 @@
+CZ
+
+Forex analytics 
+	Aplikace se dokáže pøihlásit/odhlásit k Broker XTB (kde musí být již založen úèet).
+ Aplikace bude získávat údaje o obchodovaných mìnách, stavu úètu, uzavøených obchodech a otevøených obchodech.S tìmito údaji bude poté provádìt další operace. Aplikace bude schopná na základì získaných dat otevøít nový obchod. U otevøených obchodù bude opakovanì kontrolovat stav obchodu a poté rozhodovat jestli obchod uzavøít èi ne. Uzavøené obchody bude aplikace archivovat. Dále bude aplikace ukládat do databáze vývoj ceny dané mìny otevøeného obchodu pro pozdìjší analýzu a vyhodnocení obchodu.Systém je urèen pro lidi, kteøí by chtìli zkusit být obchodníky s Forex.
+
+GIT URL:  	https://gitlab.fel.cvut.cz/B181_B6B33EAR/cermalu4
+
+Lukáš Èermák, Robert Mysliveèek
+
+
+EN
+
+Forex analytics
+	This application can Log in/out to XTB Broker (Where an account must be created). Application will receive data on traded currencies, account status, closed deals and open deals. With these data, the application will do another operations. The app will be able to open a new deal based on the data you get. For open deals it will check the status of deal repeatedly and then decide if it´s good to close deal or not. The closed deals will be archived by the application. The app holds the open currency price in the database for later analysis and evaluation of the business. The system is intended for people who want to try to by Forex trades.
+
+GIT URL:  	https://gitlab.fel.cvut.cz/B181_B6B33EAR/cermalu4
+
+Lukáš Èermák, Robert Mysliveèek

@@ -1,0 +1,129 @@
+
+-- -----------------------------------------------------
+-- Table forex.User
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS forex.User (
+  idUser SERIAL,
+  mail TEXT NULL,
+  systemPassword TEXT NULL,
+  number TEXT NULL,
+  xtbPassword TEXT NULL,
+  PRIMARY KEY (idUser));
+
+
+-- -----------------------------------------------------
+-- Table forex.Currency
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS forex.Currency (
+  idCurrency SERIAL,
+  name TEXT NULL,
+  PRIMARY KEY (idCurrency));
+
+
+-- -----------------------------------------------------
+-- Table forex.Forex
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS forex.Forex (
+  idForex SERIAL,
+  currencyOne INT NOT NULL,
+  currencyTwo INT NOT NULL,
+  PRIMARY KEY (idForex),
+  CONSTRAINT fk_Forex_Currency2
+    FOREIGN KEY (currencyOne)
+    REFERENCES forex.Currency (idCurrency)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_Forex_Currency1
+    FOREIGN KEY (currencyTwo)
+    REFERENCES forex.Currency (idCurrency)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+
+-- -----------------------------------------------------
+-- Table forex.Position
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS forex.Position (
+  idPosition SERIAL,
+  fkForex INT NOT NULL,
+  fkUser INT NOT NULL,
+  closed BOOLEAN NULL DEFAULT FALSE,
+  PRIMARY KEY (idPosition),
+  CONSTRAINT fk_Position_Forex1
+    FOREIGN KEY (fkForex)
+    REFERENCES forex.Forex (idForex)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_Position_User1
+    FOREIGN KEY (fkUser)
+    REFERENCES forex.User (idUser)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+
+-- -----------------------------------------------------
+-- Table forex.Price
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS forex.Price (
+  idPrice SERIAL,
+  price FLOAT NULL,
+  fkPosition INT NULL,
+  PRIMARY KEY (idPrice),
+  CONSTRAINT fk_Price_Position1
+    FOREIGN KEY (fkPosition)
+    REFERENCES forex.Position (idPosition)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+
+-- -----------------------------------------------------
+-- Table forex.User_Forex
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS forex.User_Forex (
+  idUser_Forex SERIAL,
+  fkForex INT NOT NULL,
+  fkUser INT NOT NULL,
+  priority INT NULL,
+  PRIMARY KEY (idUser_Forex),
+  CONSTRAINT fk_User_Forex_Forex1
+    FOREIGN KEY (fkForex)
+    REFERENCES forex.Forex (idForex)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_User_Forex_User1
+    FOREIGN KEY (fkUser)
+    REFERENCES forex.User (idUser)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+
+-- -----------------------------------------------------
+-- Table forex.Algorithm
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS forex.Algorithm (
+  idAlgorithm SERIAL,
+  name TEXT NULL,
+  description TEXT NULL,
+  weight INT NULL,
+  PRIMARY KEY (idAlgorithm));
+
+
+-- -----------------------------------------------------
+-- Table forex.Logger
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS forex.Logger (
+  idLogger SERIAL,
+  fkPosition INT NOT NULL,
+  fkAlgorithm INT NOT NULL,
+  priority INT NULL,
+  PRIMARY KEY (idLogger),
+  CONSTRAINT fk_Position_has_Algorithm_Position1
+    FOREIGN KEY (fkPosition)
+    REFERENCES forex.Position (idPosition)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_Position_has_Algorithm_Algorithm1
+    FOREIGN KEY (fkAlgorithm)
+    REFERENCES forex.Algorithm (idAlgorithm)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
