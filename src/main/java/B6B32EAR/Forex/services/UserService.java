@@ -6,17 +6,20 @@
 package B6B32EAR.Forex.services;
 
 import B6B32EAR.Forex.controller.Status;
+import B6B32EAR.Forex.jpa.dao.ForexJpaController;
 import B6B32EAR.Forex.jpa.dao.UserJpaController;
+import B6B32EAR.Forex.jpa.entities.Forex;
 import B6B32EAR.Forex.jpa.entities.User;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import B6B32EAR.Forex.jpa.entities.UserForex;
+import B6B32EAR.Forex.util.CodeAndDecode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -39,15 +42,21 @@ public class UserService {
 
     @Autowired
     BrokerPool bp;
+
+    @Autowired
+    CodeAndDecode codeAndDecode;
+
+    @Autowired
+    ForexJpaController fjc;
     
-    public Status login(User u) throws Status{
+    public Status login(Map<String, String> body) throws Status{
         try{
             if(md == null){
                 throw new Status(500, "Systémový problém");
             }
             HashMap <String, String> temp = new HashMap<>();
-            temp.put("mail", u.getMail());
-            temp.put("systempassword", new String(md.digest((u.getSystempassword()+"666").getBytes()), "UTF-8"));
+            temp.put("mail", body.get("mail"));
+            temp.put("systempassword", new String(md.digest((body.get("systempassword")+"666").getBytes()), "UTF-8"));
 
             List<User> exist = ujc.findBy(temp);
             if(exist != null){
@@ -103,8 +112,18 @@ public class UserService {
         try {
             u.setMail(user.get("mail"));
             u.setSystempassword(new String(md.digest((user.get("systempassword")+"666").getBytes()), "UTF-8"));
+            if(user.containsKey("xtbpassword"))
+                u.setXtbpassword(this.codeAndDecode.encrypt(user.get("xtbpassword")));
+            if(user.containsKey("number"))
+                u.setNumber(user.get("number"));
             if(!u.validate())
                 throw new Status(200, "Špatně vyplněná registrace");
+            HashSet<UserForex> userForex = new HashSet<>();
+            ArrayList<Forex> list = (ArrayList<Forex>) fjc.findAll();
+            for(Forex x : list){
+                userForex.add((new UserForex(x, u)));
+            }
+            u.setUserForexSet(userForex);
             ujc.persist(u);
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);

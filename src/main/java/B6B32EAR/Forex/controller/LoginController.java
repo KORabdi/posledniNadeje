@@ -43,9 +43,9 @@ public class LoginController {
         User u = new User();
         u.setMail(body.get("mail"));
         u.setSystempassword(body.get("systempassword"));
-        
+
         try {
-            this.status = users.login(u);
+            this.status = users.login(body);
         } catch (Status ex) {
             this.status = ex;
             /*HashMap temp = new HashMap<String, String>();
@@ -71,6 +71,19 @@ public class LoginController {
 
         return this.status.toJSON();
         
+    }
+
+    @RequestMapping("/register")
+    @ResponseBody
+    public JSONObject register(@RequestParam Map<String, String> body) {
+        try {
+            users.registerUser(body);
+        } catch (Status ex) {
+            return ex.toJSON();
+        }
+
+        return this.status.toJSON();
+
     }
 
 }

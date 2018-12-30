@@ -27,9 +27,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "user_forex")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "UserForex.findAll", query = "SELECT u FROM UserForex u")
-    , @NamedQuery(name = "UserForex.findByIduserForex", query = "SELECT u FROM UserForex u WHERE u.iduserForex = :iduserForex")
-    , @NamedQuery(name = "UserForex.findByPriority", query = "SELECT u FROM UserForex u WHERE u.priority = :priority")})
+    @NamedQuery(name = "UserForex.findAll", query = "SELECT u FROM User_Forex u")
+    , @NamedQuery(name = "UserForex.findByIduserForex", query = "SELECT u FROM User_Forex u WHERE u.iduserForex = :iduserForex")
+    , @NamedQuery(name = "UserForex.findByPriority", query = "SELECT u FROM User_Forex u WHERE u.priority = :priority")})
 public class UserForex implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -39,7 +39,7 @@ public class UserForex implements Serializable {
     @Column(name = "iduser_forex")
     private Integer iduserForex;
     @Column(name = "priority")
-    private Integer priority;
+    private Integer priority=9;
     @JoinColumn(name = "fkforex", referencedColumnName = "idforex")
     @ManyToOne(optional = false)
     private Forex fkforex;
@@ -48,6 +48,11 @@ public class UserForex implements Serializable {
     private User fkuser;
 
     public UserForex() {
+    }
+
+    public UserForex(Forex fkforex, User fkuser) {
+        this.fkforex = fkforex;
+        this.fkuser = fkuser;
     }
 
     public UserForex(Integer iduserForex) {

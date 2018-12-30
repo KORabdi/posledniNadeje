@@ -14,28 +14,27 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import B6B32EAR.Forex.jpa.entities.Forex;
+import org.springframework.stereotype.Repository;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.transaction.Transactional;
 
 /**
  *
  * @author zero
  */
-public class CurrencyJpaController implements Serializable {
+@Transactional
+@Repository
+public class CurrencyJpaController  extends BaseDao<Currency> {
 
-    public CurrencyJpaController(EntityManagerFactory emf) {
-        this.emf = emf;
+    public CurrencyJpaController() {
+        super(Currency.class);
     }
-    private EntityManagerFactory emf = null;
-
-    public EntityManager getEntityManager() {
-        return emf.createEntityManager();
-    }
-
     public void create(Currency currency) {
         if (currency.getForexSet() == null) {
             currency.setForexSet(new HashSet<Forex>());

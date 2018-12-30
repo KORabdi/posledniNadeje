@@ -14,32 +14,31 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import B6B32EAR.Forex.jpa.entities.Logger;
+import org.springframework.stereotype.Repository;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.transaction.Transactional;
 
 /**
  *
  * @author zero
  */
-public class AlgorithmJpaController implements Serializable {
+@Transactional
+@Repository
+public class AlgorithmJpaController  extends BaseDao<Algorithm> {
 
     /*    @PersistenceContext(unitName = "forex")
     protected EntityManager entityManager;
 */
     
-    public AlgorithmJpaController(EntityManagerFactory emf) {
-        this.emf = emf;
+    public AlgorithmJpaController()  {
+        super(Algorithm.class);
     }
-    private EntityManagerFactory emf = null;
-
-    public EntityManager getEntityManager() {
-        return emf.createEntityManager();
-    }
-
     public void create(Algorithm algorithm) {
         if (algorithm.getLoggerSet() == null) {
             algorithm.setLoggerSet(new HashSet<Logger>());

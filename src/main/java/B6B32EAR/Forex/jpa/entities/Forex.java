@@ -6,20 +6,9 @@
 package B6B32EAR.Forex.jpa.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -51,6 +40,20 @@ public class Forex implements Serializable {
     @JoinColumn(name = "currencyone", referencedColumnName = "idcurrency")
     @ManyToOne(optional = false)
     private Currency currencyone;
+
+
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinTable(name = "forex_algorithm",
+            joinColumns = @JoinColumn(name = "FK_idforex"),
+            inverseJoinColumns = @JoinColumn(name = "FK_idalgorithm")
+    )
+    private Set<Algorithm> algorithmSet = new HashSet<>();
+
+
+
 
     public Forex() {
     }

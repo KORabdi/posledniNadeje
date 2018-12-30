@@ -14,23 +14,23 @@ import javax.persistence.criteria.Root;
 import B6B32EAR.Forex.jpa.entities.Forex;
 import B6B32EAR.Forex.jpa.entities.User;
 import B6B32EAR.Forex.jpa.entities.UserForex;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.transaction.Transactional;
 
 /**
  *
  * @author zero
  */
-public class UserForexJpaController implements Serializable {
+@Transactional
+@Repository
+public class UserForexJpaController extends BaseDao<UserForex> {
 
-    public UserForexJpaController(EntityManagerFactory emf) {
-        this.emf = emf;
-    }
-    private EntityManagerFactory emf = null;
-
-    public EntityManager getEntityManager() {
-        return emf.createEntityManager();
+    public UserForexJpaController() {
+        super(UserForex.class);
     }
 
     public void create(UserForex userForex) {

@@ -19,24 +19,24 @@ import java.util.HashSet;
 import java.util.Set;
 import B6B32EAR.Forex.jpa.entities.Logger;
 import B6B32EAR.Forex.jpa.entities.Position;
+import org.springframework.stereotype.Repository;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.transaction.Transactional;
 
 /**
  *
  * @author zero
  */
-public class PositionJpaController implements Serializable {
+@Transactional
+@Repository
+public class PositionJpaController extends BaseDao<Position> {
 
-    public PositionJpaController(EntityManagerFactory emf) {
-        this.emf = emf;
-    }
-    private EntityManagerFactory emf = null;
-
-    public EntityManager getEntityManager() {
-        return emf.createEntityManager();
+    public PositionJpaController() {
+        super(Position.class);
     }
 
     public void create(Position position) {

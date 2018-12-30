@@ -14,23 +14,23 @@ import javax.persistence.criteria.Root;
 import B6B32EAR.Forex.jpa.entities.Algorithm;
 import B6B32EAR.Forex.jpa.entities.Logger;
 import B6B32EAR.Forex.jpa.entities.Position;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.transaction.Transactional;
 
 /**
  *
  * @author zero
  */
-public class LoggerJpaController implements Serializable {
+@Transactional
+@Repository
+public class LoggerJpaController  extends BaseDao<Logger>  {
 
-    public LoggerJpaController(EntityManagerFactory emf) {
-        this.emf = emf;
-    }
-    private EntityManagerFactory emf = null;
-
-    public EntityManager getEntityManager() {
-        return emf.createEntityManager();
+    public LoggerJpaController() {
+        super(Logger.class);
     }
 
     public void create(Logger logger) {

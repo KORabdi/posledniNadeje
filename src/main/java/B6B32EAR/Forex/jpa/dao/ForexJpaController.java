@@ -12,31 +12,32 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import B6B32EAR.Forex.jpa.entities.Currency;
-import B6B32EAR.Forex.jpa.entities.Forex;
-import B6B32EAR.Forex.jpa.entities.UserForex;
+
+import B6B32EAR.Forex.jpa.entities.*;
+
 import java.util.HashSet;
 import java.util.Set;
-import B6B32EAR.Forex.jpa.entities.Position;
+
+import org.springframework.stereotype.Repository;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.transaction.Transactional;
 
 /**
  *
  * @author zero
  */
-public class ForexJpaController implements Serializable {
+@Transactional
+@Repository
+public class ForexJpaController extends BaseDao<Forex>  {
 
-    public ForexJpaController(EntityManagerFactory emf) {
-        this.emf = emf;
+    public ForexJpaController() {
+        super(Forex.class);
     }
-    private EntityManagerFactory emf = null;
 
-    public EntityManager getEntityManager() {
-        return emf.createEntityManager();
-    }
 
     public void create(Forex forex) {
         if (forex.getUserForexSet() == null) {

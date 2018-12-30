@@ -13,6 +13,10 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import B6B32EAR.Forex.jpa.entities.Position;
 import B6B32EAR.Forex.jpa.entities.Price;
+import B6B32EAR.Forex.jpa.entities.User;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -21,17 +25,13 @@ import javax.persistence.EntityManagerFactory;
  *
  * @author zero
  */
-public class PriceJpaController implements Serializable {
+@Transactional
+@Repository
+public class PriceJpaController  extends BaseDao<Price> {
 
-    public PriceJpaController(EntityManagerFactory emf) {
-        this.emf = emf;
+    public PriceJpaController() {
+        super(Price.class);
     }
-    private EntityManagerFactory emf = null;
-
-    public EntityManager getEntityManager() {
-        return emf.createEntityManager();
-    }
-
     public void create(Price price) {
         EntityManager em = null;
         try {
