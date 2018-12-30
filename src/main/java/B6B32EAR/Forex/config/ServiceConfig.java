@@ -9,6 +9,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import B6B32EAR.Forex.util.CodeAndDecode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -30,5 +32,12 @@ public class ServiceConfig {
         }
         return md;
         
+    }
+
+    @Bean
+    public CodeAndDecode codeAndDecode(){
+        CodeAndDecode temp = new CodeAndDecode();
+        temp.setKey("Lorem ipsum");
+        return temp;
     }
 }

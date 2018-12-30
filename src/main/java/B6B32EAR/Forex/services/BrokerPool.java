@@ -34,9 +34,11 @@ public class BrokerPool {
     public void initialize(){
         users = ujc.findAll();
         for(User user : users){
-            //Broker temp = new Broker(user);
-            //temp.start();
-            //brokerlist.put(user.getIduser(), temp);
+            Broker temp = new Broker(user);
+            if(temp.initialize()) {
+                temp.start();
+                brokerlist.put(user.getIduser(), temp);
+            }
             
         }
     }
